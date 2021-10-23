@@ -51,8 +51,17 @@ public class DataBase {
         return students;
     }
 
-    public void createStudent(Student student) {
+    public Student createStudent(String firstName, String lastName, String house) {
+        return createStudent(firstName, lastName, null, house);
+    }
+
+    public Student createStudent(String firstName, String lastName, String middleName, String house) {
+        if("".equals(middleName.trim())) {
+            middleName = null;
+        }
+        Student student = new Student(firstName, lastName, middleName, house);
         students.add(student);
+        return student;
     }
 
     public void removeStudent(Student student) {

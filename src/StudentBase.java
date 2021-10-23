@@ -99,16 +99,11 @@ public class StudentBase {
         String lastName = scanner.nextLine();
         System.out.print("middle name (press enter if no middle name): ");
         String middleName = scanner.nextLine();
-        if ("".equals(middleName.trim())) {
-            middleName = null;
-        }
         System.out.print("house: ");
         String house = scanner.nextLine();
 
-        Student student = new Student(firstName, lastName, middleName, house);
+        Student student = db.createStudent(firstName, lastName, middleName, house);
 
-
-        db.createStudent(student);
         System.out.println("Student '" + student.getFirstName() + " " + student.getLastName() + "' added - there are now " + db.size() + " students in the database");
     }
 

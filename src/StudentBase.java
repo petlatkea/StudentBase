@@ -4,10 +4,10 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Main {
-    private static ArrayList<Student> students = new ArrayList<>();
+public class StudentBase {
+    private ArrayList<Student> students = new ArrayList<>();
 
-    private static void loadFile() throws FileNotFoundException {
+    private void loadFile() throws FileNotFoundException {
         // load students from database-file
         File file = new File("students.csv");
         Scanner filereader = new Scanner(file);
@@ -31,7 +31,7 @@ public class Main {
         }
     }
 
-    private static void saveFile() throws FileNotFoundException {
+    private void saveFile() throws FileNotFoundException {
         File file = new File("students.csv");
         PrintStream output = new PrintStream(file);
         // write heading for the csv-file
@@ -47,8 +47,7 @@ public class Main {
         output.flush();
     }
 
-
-    private static void listAllStudents() {
+    private void listAllStudents() {
         System.out.println("""
                 All students
                 ------------""");
@@ -63,7 +62,7 @@ public class Main {
         System.out.println("There are " + students.size() + " students in the database");
     }
 
-    private static void editStudent(Student currentStudent) {
+    private void editStudent(Student currentStudent) {
         // Edit student - only possible if currentStudent isn't null
         if (currentStudent != null) {
             // TODO: Edit
@@ -73,7 +72,7 @@ public class Main {
         }
     }
 
-    private static Student findStudent(Student currentStudent, Scanner scanner) {
+    private Student findStudent(Student currentStudent, Scanner scanner) {
         System.out.println("""
                 Find student
                 ------------
@@ -117,7 +116,7 @@ public class Main {
         return currentStudent;
     }
 
-    private static void deleteStudent(Student currentStudent, Scanner scanner) {
+    private void deleteStudent(Student currentStudent, Scanner scanner) {
         // Delete student - only possible if currentStudent isn't null
         if (currentStudent != null) {
             System.out.println("Are you sure that you want to delete: '" + currentStudent.getFirstName() + " " + currentStudent.getLastName() + "' (y/N)?\nThis operation cannot be undone!");
@@ -134,7 +133,7 @@ public class Main {
         }
     }
 
-    private static void createStudent(Scanner scanner) {
+    private void createStudent(Scanner scanner) {
         System.out.println("""
                 Create student
                 --------------
@@ -156,8 +155,7 @@ public class Main {
         System.out.println("Student '" + student.getFirstName() + " " + student.getLastName() + "' added - there are now " + students.size() + " students in the database");
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
-
+    private void start() throws FileNotFoundException {
         loadFile();
 
         System.out.println("Welcome to StudentBase 9001");
@@ -207,6 +205,11 @@ public class Main {
                     break;
             }
         }
+    }
+
+    public static void main(String[] args) throws FileNotFoundException {
+        StudentBase application = new StudentBase();
+        application.start();
     }
 
 

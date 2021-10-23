@@ -5,49 +5,11 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class StudentBase {
-    private ArrayList<Student> students = new ArrayList<>();
-
-    private void loadFile() throws FileNotFoundException {
-        // load students from database-file
-        File file = new File("students.csv");
-        Scanner filereader = new Scanner(file);
-        // ignore the first line, which has the headings
-        filereader.nextLine();
-        while (filereader.hasNext()) {
-            String line = filereader.nextLine();
-            String[] strings = line.split(";");
-
-            String firstName = strings[0];
-            String lastName = strings[1];
-            String middleName = strings[2];
-            String house = strings[3];
-
-            if (middleName.trim().equals("")) {
-                middleName = null;
-            }
-
-            Student student = new Student(firstName, lastName, middleName, house);
-            students.add(student);
-        }
-    }
-
-    private void saveFile() throws FileNotFoundException {
-        File file = new File("students.csv");
-        PrintStream output = new PrintStream(file);
-        // write heading for the csv-file
-        output.println("firstName;lastName;middleName;house");
-        for (int i = 0; i < students.size(); i++) {
-            if (students.get(i).getMiddleName() != null) {
-                output.println(students.get(i).getFirstName() + ";" + students.get(i).getLastName() + ";" + students.get(i).getMiddleName() + ";" + students.get(i).getHouse());
-            } else {
-                // write an empty middleName if no middleName!
-                output.println(students.get(i).getFirstName() + ";" + students.get(i).getLastName() + ";;" + students.get(i).getHouse());
-            }
-        }
-        output.flush();
-    }
+    private DataBase db;
 
     private void listAllStudents() {
+        ArrayList<Student> students = db.getAllStudents();
+
         System.out.println("""
                 All students
                 ------------""");
@@ -80,14 +42,7 @@ public class StudentBase {
         System.out.print(": ");
         String search = scanner.nextLine().trim().toLowerCase();
 
-        ArrayList<Student> foundStudents = new ArrayList<>();
-        for (int i = 0; i < students.size(); i++) {
-            if (students.get(i).getFirstName().toLowerCase().contains(search) ||
-                    students.get(i).getLastName().toLowerCase().contains(search) ||
-                    (students.get(i).getMiddleName() != null && students.get(i).getMiddleName().toLowerCase().contains(search))) {
-                foundStudents.add(students.get(i));
-            }
-        }
+        ArrayList<Student> foundStudents = db.findStudent(search);
 
         if (foundStudents.size() == 1) {
             currentStudent = foundStudents.get(0);
@@ -122,7 +77,7 @@ public class StudentBase {
             System.out.println("Are you sure that you want to delete: '" + currentStudent.getFirstName() + " " + currentStudent.getLastName() + "' (y/N)?\nThis operation cannot be undone!");
             String answer = scanner.nextLine();
             if ("y".equalsIgnoreCase(answer)) {
-                students.remove(currentStudent);
+                db.removeStudent(currentStudent);
                 System.out.println("'" + currentStudent.getFirstName() + " " + currentStudent.getLastName() + "' has been deleted.");
             } else {
                 System.out.println("ok");
@@ -151,12 +106,16 @@ public class StudentBase {
         String house = scanner.nextLine();
 
         Student student = new Student(firstName, lastName, middleName, house);
-        students.add(student);
-        System.out.println("Student '" + student.getFirstName() + " " + student.getLastName() + "' added - there are now " + students.size() + " students in the database");
+
+
+        db.createStudent(student);
+        System.out.println("Student '" + student.getFirstName() + " " + student.getLastName() + "' added - there are now " + db.size() + " students in the database");
     }
 
     private void start() throws FileNotFoundException {
-        loadFile();
+        db = new DataBase();
+
+        db.loadFile();
 
         System.out.println("Welcome to StudentBase 9001");
         System.out.println("---------------------------");
@@ -182,7 +141,7 @@ public class StudentBase {
                 case 0:
                     System.out.println("Saving the list of students");
 
-                    saveFile();
+                    db.saveFile();
 
                     System.out.println("exiting, thanks bye!");
                     isRunning = false;

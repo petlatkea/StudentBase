@@ -1,6 +1,4 @@
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -14,11 +12,8 @@ public class StudentBase {
                 All students
                 ------------""");
         for (int i = 0; i < students.size(); i++) {
-            if (students.get(i).getMiddleName() != null) {
-                System.out.println((i + 1) + " - " + students.get(i).getFirstName() + " " + students.get(i).getMiddleName() + " " + students.get(i).getLastName() + " of house " + students.get(i).getHouse());
-            } else {
-                System.out.println((i + 1) + " - " + students.get(i).getFirstName() + " " + students.get(i).getLastName() + " of house " + students.get(i).getHouse());
-            }
+            System.out.println((i + 1) + " - " + students.get(i) + " of house " + students.get(i).getHouse());
+
         }
         System.out.println("-------------------");
         System.out.println("There are " + students.size() + " students in the database");
@@ -46,11 +41,11 @@ public class StudentBase {
 
         if (foundStudents.size() == 1) {
             currentStudent = foundStudents.get(0);
-            System.out.println("Found: " + currentStudent.getFirstName() + " " + currentStudent.getLastName());
+            System.out.println("Found: " + currentStudent);
         } else if (foundStudents.size() > 1) {
             System.out.println("Found more matches:");
             for (int i = 0; i < foundStudents.size(); i++) {
-                System.out.println("#" + (i + 1) + ": " + foundStudents.get(i).getFirstName() + " " + foundStudents.get(i).getLastName());
+                System.out.println("#" + (i + 1) + ": " + foundStudents.get(i));
             }
             System.out.println("Please select by entering the number next to the #: ");
             int select = 0;
@@ -61,7 +56,7 @@ public class StudentBase {
                     System.out.println("Please enter a number between 1 and " + foundStudents.size());
                 } else {
                     currentStudent = foundStudents.get(select - 1);
-                    System.out.println("You selected: " + currentStudent.getFirstName() + currentStudent.getLastName());
+                    System.out.println("You selected: " + currentStudent);
                 }
             }
         } else {
@@ -74,11 +69,11 @@ public class StudentBase {
     private void deleteStudent(Student currentStudent, Scanner scanner) {
         // Delete student - only possible if currentStudent isn't null
         if (currentStudent != null) {
-            System.out.println("Are you sure that you want to delete: '" + currentStudent.getFirstName() + " " + currentStudent.getLastName() + "' (y/N)?\nThis operation cannot be undone!");
+            System.out.println("Are you sure that you want to delete: '" + currentStudent + "' (y/N)?\nThis operation cannot be undone!");
             String answer = scanner.nextLine();
             if ("y".equalsIgnoreCase(answer)) {
                 db.removeStudent(currentStudent);
-                System.out.println("'" + currentStudent.getFirstName() + " " + currentStudent.getLastName() + "' has been deleted.");
+                System.out.println("'" + currentStudent + "' has been deleted.");
             } else {
                 System.out.println("ok");
             }
@@ -104,7 +99,7 @@ public class StudentBase {
 
         Student student = db.createStudent(firstName, lastName, middleName, house);
 
-        System.out.println("Student '" + student.getFirstName() + " " + student.getLastName() + "' added - there are now " + db.size() + " students in the database");
+        System.out.println("Student '" + student + "' added - there are now " + db.size() + " students in the database");
     }
 
     private void start() throws FileNotFoundException {

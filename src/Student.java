@@ -42,4 +42,13 @@ public class Student {
     public void setHouse(String house) {
         this.house = house;
     }
+
+    @Override
+    public String toString() {
+        if(middleName != null) {
+            return firstName + " " + middleName + " " + lastName;
+        } else {
+            return firstName + " " + lastName;
+        }
+    }
 }

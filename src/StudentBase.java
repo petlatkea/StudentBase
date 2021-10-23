@@ -1,22 +1,22 @@
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class StudentBase {
     private DataBase db;
 
     private void listAllStudents() {
-        ArrayList<Student> students = db.getAllStudents();
-
         System.out.println("""
                 All students
                 ------------""");
-        for (int i = 0; i < students.size(); i++) {
-            System.out.println((i + 1) + " - " + students.get(i) + " of house " + students.get(i).getHouse());
-
+        int counter = 1;
+        for (Student student : db.getAllStudents()) {
+            System.out.println(counter + " - " + student + " of house " + student.getHouse());
+            counter++;
         }
         System.out.println("-------------------");
-        System.out.println("There are " + students.size() + " students in the database");
+        System.out.println("There are " + db.size() + " students in the database");
     }
 
     private void editStudent(Student currentStudent) {
@@ -37,25 +37,25 @@ public class StudentBase {
         System.out.print(": ");
         String search = scanner.nextLine().trim().toLowerCase();
 
-        ArrayList<Student> foundStudents = db.findStudent(search);
+        Student[] foundStudents = db.findStudent(search);
 
-        if (foundStudents.size() == 1) {
-            currentStudent = foundStudents.get(0);
+        if (foundStudents.length == 1) {
+            currentStudent = foundStudents[0];
             System.out.println("Found: " + currentStudent);
-        } else if (foundStudents.size() > 1) {
+        } else if (foundStudents.length > 1) {
             System.out.println("Found more matches:");
-            for (int i = 0; i < foundStudents.size(); i++) {
-                System.out.println("#" + (i + 1) + ": " + foundStudents.get(i));
+            for (int i = 0; i < foundStudents.length; i++) {
+                System.out.println("#" + (i + 1) + ": " + foundStudents[i]);
             }
             System.out.println("Please select by entering the number next to the #: ");
             int select = 0;
-            while (select < 1 || select > foundStudents.size()) {
+            while (select < 1 || select > foundStudents.length) {
                 select = scanner.nextInt();
                 scanner.nextLine();
-                if (select < 1 || select > foundStudents.size()) {
-                    System.out.println("Please enter a number between 1 and " + foundStudents.size());
+                if (select < 1 || select > foundStudents.length) {
+                    System.out.println("Please enter a number between 1 and " + foundStudents.length);
                 } else {
-                    currentStudent = foundStudents.get(select - 1);
+                    currentStudent = foundStudents[select - 1];
                     System.out.println("You selected: " + currentStudent);
                 }
             }

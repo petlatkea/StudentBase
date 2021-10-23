@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class DataBase {
@@ -47,7 +48,7 @@ public class DataBase {
         output.flush();
     }
 
-    public ArrayList<Student> getAllStudents() {
+    public Iterable<Student> getAllStudents() {
         return students;
     }
 
@@ -68,7 +69,7 @@ public class DataBase {
         students.remove(student);
     }
 
-    public ArrayList<Student> findStudent(String search) {
+    public Student[] findStudent(String search) {
         ArrayList<Student> foundStudents = new ArrayList<>();
         for (int i = 0; i < students.size(); i++) {
             if (students.get(i).getFirstName().toLowerCase().contains(search) ||
@@ -77,7 +78,7 @@ public class DataBase {
                 foundStudents.add(students.get(i));
             }
         }
-        return foundStudents;
+        return foundStudents.toArray(new Student[0]); // Note: size 0 is better than size foundStudents.size(), since the array is never used!
     }
 
     public int size() {

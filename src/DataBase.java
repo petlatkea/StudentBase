@@ -2,50 +2,37 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 
 public class DataBase {
     private ArrayList<Student> students = new ArrayList<>();
 
     public void loadFile() throws FileNotFoundException {
         // load students from database-file
-        File file = new File("students.csv");
-        Scanner filereader = new Scanner(file);
-        // ignore the first line, which has the headings
-        filereader.nextLine();
-        while (filereader.hasNext()) {
-            String line = filereader.nextLine();
-            String[] strings = line.split(";");
+        CSVFile file = new CSVFile("students.csv");
+        file.openForRead();
+
+        while(file.hasNext()) {
+            String[] strings = file.next();
 
             String firstName = strings[0];
             String lastName = strings[1];
             String middleName = strings[2];
             String house = strings[3];
 
-            if (middleName.trim().equals("")) {
-                middleName = null;
-            }
-
-            Student student = new Student(firstName, lastName, middleName, house);
-            students.add(student);
+            createStudent(firstName,lastName,middleName,house);
         }
+        file.close();
     }
 
     public void saveFile() throws FileNotFoundException {
-        File file = new File("students.csv");
-        PrintStream output = new PrintStream(file);
-        // write heading for the csv-file
-        output.println("firstName;lastName;middleName;house");
-        for (int i = 0; i < students.size(); i++) {
-            if (students.get(i).getMiddleName() != null) {
-                output.println(students.get(i).getFirstName() + ";" + students.get(i).getLastName() + ";" + students.get(i).getMiddleName() + ";" + students.get(i).getHouse());
-            } else {
-                // write an empty middleName if no middleName!
-                output.println(students.get(i).getFirstName() + ";" + students.get(i).getLastName() + ";;" + students.get(i).getHouse());
-            }
+        CSVFile file = new CSVFile("students.csv");
+        file.openForWrite();
+
+        file.writeHeading(new String[]{"firstName", "lastName", "middleName", "house"});
+
+        for(Student student : students) {
+            file.writeLine(new String[]{student.getFirstName(), student.getLastName(), student.getMiddleName(), student.getHouse()});
         }
-        output.flush();
     }
 
     public Iterable<Student> getAllStudents() {

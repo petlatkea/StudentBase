@@ -1,7 +1,7 @@
 import java.io.FileNotFoundException;
 
 public class Controller {
-    private DataBase db;
+    private final DataBase db;
     private Student selectedStudent = null;
 
     public Controller() {
@@ -40,8 +40,16 @@ public class Controller {
         return selectedStudent;
     }
 
+    public boolean hasSelectedStudent() {
+        return selectedStudent != null;
+    }
+
     public Student deleteSelectedStudent() {
+        Student student = selectedStudent;
+
         db.removeStudent(selectedStudent);
-        return selectedStudent;
+        selectedStudent = null;
+
+        return student;
     }
 }

@@ -1,12 +1,10 @@
 import java.io.FileNotFoundException;
 
 public class StudentBase {
-    private Controller controller;
-    private UserInterface ui;
 
     private void start() throws FileNotFoundException {
-        controller = new Controller();
-        ui = new UserInterface(controller);
+        Controller controller = new Controller();
+        UserInterface ui = new UserInterface(controller);
 
         controller.start();
         ui.start();

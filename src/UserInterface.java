@@ -2,7 +2,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class UserInterface {
-    private Controller controller;
+    private final Controller controller;
 
     public UserInterface(Controller controller) {
         this.controller = controller;
@@ -35,10 +35,8 @@ public class UserInterface {
                 case 0:
                     System.out.println("Saving the list of students");
                     controller.end();
-
                     System.out.println("exiting, thanks bye!");
                     isRunning = false;
-                    System.exit(0);
                     break;
                 case 1:
                     listAllStudents();
@@ -128,8 +126,8 @@ public class UserInterface {
     }
 
     private void deleteStudent(Scanner scanner) {
-        // Delete student - only possible if currentStudent isn't null
-        if (controller.getSelectedStudent() != null) {
+        // Delete student - only possible if there is a selected student
+        if (controller.hasSelectedStudent()) {
             System.out.println("Are you sure that you want to delete: '" + controller.getSelectedStudent() + "' (y/N)?\nThis operation cannot be undone!");
             String answer = scanner.nextLine();
             if ("y".equalsIgnoreCase(answer)) {
@@ -144,8 +142,8 @@ public class UserInterface {
     }
 
     private void editStudent() {
-        // Edit student - only possible if currentStudent isn't null
-        if (controller.getSelectedStudent() != null) {
+        // Edit student - only possible if there is a selected student
+        if (controller.hasSelectedStudent()) {
             // TODO: Edit
             System.out.println("Edit student (NOT YET IMPLEMENTED)");
         } else {

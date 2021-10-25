@@ -66,6 +66,10 @@ public class Student {
         return new String[]{firstName, lastName, middleName, house};
     }
 
+    public static String[] getStringNames() {
+        return new String[]{"firstName", "lastName", "middleName", "house"};
+    }
+
     public static Student fromStrings(String[] strings) {
         Student newStudent = new Student();
 

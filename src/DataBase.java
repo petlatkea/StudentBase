@@ -20,7 +20,7 @@ public class DataBase {
         CSVFile file = new CSVFile("students.csv");
         file.openForWrite();
 
-        file.writeHeading(new String[]{"firstName", "lastName", "middleName", "house"});
+        file.writeHeading(Student.getStringNames());
 
         for(Student student : students) {
             file.writeLine(student.toStrings());

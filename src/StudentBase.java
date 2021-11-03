@@ -1,8 +1,6 @@
-import java.io.FileNotFoundException;
-
 public class StudentBase {
 
-    private void start() throws FileNotFoundException {
+    private void start() {
         Controller controller = new Controller();
         UserInterface ui = new UserInterface(controller);
 
@@ -10,7 +8,7 @@ public class StudentBase {
         ui.start();
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) {
         StudentBase application = new StudentBase();
         application.start();
     }

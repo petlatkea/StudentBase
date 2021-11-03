@@ -8,12 +8,16 @@ public class Controller {
         db = new DataBase();
     }
 
-    public void start() throws FileNotFoundException {
+    public void start() {
         db.loadFile();
     }
 
     public void end() throws FileNotFoundException {
         db.saveFile();
+    }
+
+    public void setFileName(String filename) {
+        db.setFileName(filename);
     }
 
     public Iterable<Student> getAllStudents() {

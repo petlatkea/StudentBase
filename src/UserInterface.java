@@ -8,14 +8,14 @@ public class UserInterface {
         this.controller = controller;
     }
 
-    public void start() throws FileNotFoundException {
+    public void start() {
         System.out.println("Welcome to StudentBase 9001");
         System.out.println("---------------------------");
 
         mainMenu();
     }
 
-    private void mainMenu() throws FileNotFoundException {
+    private void mainMenu() {
         Scanner scanner = new Scanner(System.in);
         boolean isRunning = true;
         while (isRunning) {
@@ -33,10 +33,25 @@ public class UserInterface {
             scanner.nextLine(); // Fix for the "scanner bug"
             switch (selection) {
                 case 0:
-                    System.out.println("Saving the list of students");
-                    controller.end();
-                    System.out.println("exiting, thanks bye!");
-                    isRunning = false;
+
+                    boolean notSaved = true;
+                    while(notSaved) {
+                        try {
+                            System.out.println("Saving the list of students");
+                            controller.end();
+                            notSaved = false;
+                            System.out.println("exiting, thanks bye!");
+                            isRunning = false;
+                        }
+                        catch (FileNotFoundException exception) {
+                            notSaved = true;
+                            System.out.println("Could not save the list to usual filename");
+                            System.out.print("Please supply a diffent filename: ");
+                            String filename = scanner.nextLine();
+                            controller.setFileName(filename);
+                        }
+                    }
+
                     break;
                 case 1:
                     listAllStudents();

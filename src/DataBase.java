@@ -3,21 +3,37 @@ import java.util.ArrayList;
 
 public class DataBase {
     private final ArrayList<Student> students = new ArrayList<>();
+    private String filename = "students.csv";
 
-    public void loadFile() throws FileNotFoundException {
-        // load students from database-file
-        CSVFile file = new CSVFile("students.csv");
-        file.openForRead();
-
-        while(file.hasNext()) {
-            String[] strings = file.next();
-            addStudent(Student.fromStrings(strings));
+    public void setFileName(String filename) {
+        if( "".equals(filename.trim()) ) {
+            filename = "students.csv";
         }
-        file.close();
+
+        this.filename = filename;
+    }
+
+
+    public void loadFile()  {
+        // load students from database-file
+        CSVFile file = new CSVFile(filename);
+        try {
+            file.openForRead();
+
+            while (file.hasNext()) {
+                String[] strings = file.next();
+                addStudent(Student.fromStrings(strings));
+            }
+            file.close();
+        }
+        catch (FileNotFoundException exception) {
+            // Føles ikke godt, burde nok ligge i UserInterface
+            System.out.println("Database-fil ikke fundet - starter med en tom database!");
+        }
     }
 
     public void saveFile() throws FileNotFoundException {
-        CSVFile file = new CSVFile("students.csv");
+        CSVFile file = new CSVFile(filename);
         file.openForWrite();
 
         file.writeHeading(Student.getStringNames());

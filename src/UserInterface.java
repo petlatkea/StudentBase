@@ -1,4 +1,3 @@
-import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -11,6 +10,12 @@ public class UserInterface {
     public void start() {
         System.out.println("Welcome to StudentBase 9001");
         System.out.println("---------------------------");
+
+        try {
+            controller.start();
+        } catch(CSVFileReadException exception) {
+            System.out.println("Couldn't load file - start with empty database");
+        }
 
         mainMenu();
     }
@@ -43,7 +48,7 @@ public class UserInterface {
                             System.out.println("exiting, thanks bye!");
                             isRunning = false;
                         }
-                        catch (FileNotFoundException exception) {
+                        catch (CSVFileWriteException exception) {
                             notSaved = true;
                             System.out.println("Could not save the list to usual filename");
                             System.out.print("Please supply a diffent filename: ");

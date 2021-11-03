@@ -1,5 +1,3 @@
-import java.io.FileNotFoundException;
-
 public class Controller {
     private final DataBase db;
     private Student selectedStudent = null;
@@ -12,7 +10,7 @@ public class Controller {
         db.loadFile();
     }
 
-    public void end() throws FileNotFoundException {
+    public void end() {
         db.saveFile();
     }
 

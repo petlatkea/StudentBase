@@ -1,4 +1,3 @@
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class DataBase {
@@ -17,22 +16,18 @@ public class DataBase {
     public void loadFile()  {
         // load students from database-file
         CSVFile file = new CSVFile(filename);
-        try {
-            file.openForRead();
 
-            while (file.hasNext()) {
-                String[] strings = file.next();
-                addStudent(Student.fromStrings(strings));
-            }
-            file.close();
+        file.openForRead();
+
+        while (file.hasNext()) {
+            String[] strings = file.next();
+            addStudent(Student.fromStrings(strings));
         }
-        catch (FileNotFoundException exception) {
-            // Føles ikke godt, burde nok ligge i UserInterface
-            System.out.println("Database-fil ikke fundet - starter med en tom database!");
-        }
+        file.close();
+
     }
 
-    public void saveFile() throws FileNotFoundException {
+    public void saveFile() {
         CSVFile file = new CSVFile(filename);
         file.openForWrite();
 

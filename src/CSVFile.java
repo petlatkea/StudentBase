@@ -14,14 +14,22 @@ public class CSVFile {
         this.filename = filename;
     }
 
-    public void openForRead() throws FileNotFoundException {
-        filereader = new Scanner(new File(filename));
-        // ignore the first line, which has the headings
-        filereader.nextLine();
+    public void openForRead() throws CSVFileReadException {
+        try {
+            filereader = new Scanner(new File(filename));
+            // ignore the first line, which has the headings
+            filereader.nextLine();
+        } catch (FileNotFoundException ex) {
+            throw new CSVFileReadException("Can't read from " + filename, ex);
+        }
     }
 
-    public void openForWrite() throws FileNotFoundException {
-        filewriter = new PrintStream(filename);
+    public void openForWrite() throws CSVFileWriteException {
+        try {
+            filewriter = new PrintStream(filename);
+        } catch (FileNotFoundException ex) {
+            throw new CSVFileWriteException("Can't write to " + filename, ex);
+        }
     }
 
     public void writeLine(String[] strings) {

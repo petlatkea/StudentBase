@@ -3,8 +3,6 @@ public class StudentBase {
     private void start() {
         Controller controller = new Controller();
         UserInterface ui = new UserInterface(controller);
-
-        controller.start();
         ui.start();
     }
 
